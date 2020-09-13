@@ -10,7 +10,7 @@ class UmeiSpider(scrapy.Spider):
     name = 'umei'
     # allowed_domains = ['https://www.umei.cc/tags/meinv_1.htm']
     start_urls = ['https://www.umei.cc/tags/meinv_1.htm']
-
+    
     def parse(self, response):
         for src in Selector(response).xpath("//div[@class='TypeList']/ul/li/a/@href").extract():
             yield scrapy.Request(src, callback=self.parse_img_link)
@@ -18,6 +18,7 @@ class UmeiSpider(scrapy.Spider):
             next_page = response.xpath("//div[@class='NewPages']/ul/li/a[text()='下一页']/@href").get()
             yield scrapy.Request(response.urljoin(next_page), callback=self.parse)
 
+    # 爬取具体图片链接
     def parse_img_link(self, response):
         item = GanDataItem()
         img_link = Selector(response).xpath("//div[@class='ImageBody']/p/a/img/@src").get()
