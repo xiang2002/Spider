@@ -18,7 +18,7 @@ class UmeiSpider(scrapy.Spider):
             next_page = response.xpath("//div[@class='NewPages']/ul/li/a[text()='下一页']/@href").get()
             yield scrapy.Request(response.urljoin(next_page), callback=self.parse)
 
-    # 爬取具体图片链接
+    # 爬取具体的图片链接
     def parse_img_link(self, response):
         item = GanDataItem()
         img_link = Selector(response).xpath("//div[@class='ImageBody']/p/a/img/@src").get()
