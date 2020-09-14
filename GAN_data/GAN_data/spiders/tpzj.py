@@ -18,12 +18,13 @@ class TpzjSpider(scrapy.Spider):
             yield scrapy.Request(response.urljoin(next_page), callback=self.parse)
 
     def parse_img_link(self, response):
-        item = GanDataItem()
-        img_link = response.xpath("//div[@class='show-simg']/a/img/@src").get()
-        img_id = response.url.split("/")[-1].split(".")[0]
-        item['name'] = str(uuid.uuid4()).replace("-", "")+'.jpg'
-        item['src'] = img_link
-        yield item
+        if response.url.split("_")[0] != response.url:
+            item = GanDataItem()
+            img_link = response.xpath("//div[@class='show-simg']/a/img/@src").get()
+            item['name'] = str(uuid.uuid4()).replace("-", "")+'.jpg'
+            item['src'] = img_link
+            yield item
+        img_id = response.url.split("/")[-1].split(".")[0].split("_")[0]
         if img_id in response.xpath("//div[@class='show-simg']/a/@href").get():
             next_img = response.xpath("//div[@class='show-simg']/a/@href").get()
             yield scrapy.Request(response.urljoin(next_img), callback=self.parse_img_link)
