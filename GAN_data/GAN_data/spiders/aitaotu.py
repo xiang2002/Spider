@@ -8,7 +8,7 @@ from GAN_data.items import GanDataItem
 class AitaotuSpider(scrapy.Spider):
     name = 'aitaotu'
     # allowed_domains = ['https://www.aitaotu.com/tag/tmnh.html']
-    start_urls = ['https://www.aitaotu.com/tag/tmnh.html']
+    start_urls = ['https://www.aitaotu.com/tag/qingchunmeinv.html']
 
     def parse(self, response):
         for src in response.xpath("//div[@class='libox']/a/@href").extract():
